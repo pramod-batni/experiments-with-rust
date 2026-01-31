@@ -175,3 +175,7 @@ and the corresponding source code (main.rs)  with line number annotation is
 conclusion: some rust runtime code (called just before main returns or after main returns; might have to look at the 
 assembly inastructions)  that is getting invoked during cleanup and that seems to be allocating memory on the stack 
 
+
+So after an interactive session with Gemini, i figured as to what was stated above was indeed the happenings and
+expectedly it would have cause a stack overflow as seen in experimentation when the numer of noded alocated 
+goes beyond a smallish number like 1 million or so.

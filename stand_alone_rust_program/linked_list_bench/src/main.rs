@@ -86,13 +86,13 @@ fn main() {
     let (visited, time, cycles) = list.benchmark_traversal();
 
     // --- Statistics ---
-    let time_ns = time.as_nanos() as f64;
-    let cycles_f = cycles as f64;
+   let time_ns = time.as_nanos() as f64;
+   let cycles_f = cycles as f64;
 
     println!("\n[Results]");
+    println!("Total Nodes Visited:   {:?}", visited);
     println!("Total Time:   {:?}", time);
     println!("Total Cycles: {}", cycles);
-
     if visited > 0 {
         println!("\n[Efficiency Metrics]");
         println!("Time per Node:   {:.2} ns", time_ns / visited as f64);
@@ -102,5 +102,13 @@ fn main() {
         let ghz = (cycles_f / time_ns); 
         println!("Effective Speed: {:.2} GHz", ghz);
     }
+
+    // As suspected the hidden boss [of Rust's strict ownership notions and its ramifications [due
+    // to it calling destructor for the linked list given that it is going out of scope when main()
+    // returns] causes the srtack overflow.
+    //std::process::exit(-1); //let's escape from Rust's ownership notions and let OS take care
+
+    // Rust's mechanism to overcome dropping references -- aka legal way to leak memory
+    std::mem::forget(list);
 }
 
